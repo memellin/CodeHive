@@ -1,0 +1,23 @@
+{
+  "name": "codehive",
+  "version": "1.0.0",
+  "description": "projeto codeHive ",
+  "main": "script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node script.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/memellin/CodeHive.git"
+  },
+  "author": "enock e felipe sabino",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/memellin/CodeHive/issues"
+  },
+  "homepage": "https://github.com/memellin/CodeHive#readme",
+  "dependencies": {
+    "express": "^4.21.2"
+  }
+}
