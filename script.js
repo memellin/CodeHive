@@ -2,10 +2,13 @@ const express = require('express');
 const dotenv = require('dotenv');
 const sequelize = require('./src/config/database');
 const snippetRoutes = require('./src/route/snippetRoutes');
+const cors = require('./src/config/cors');
 
 dotenv.config();
 
 const app = express();
+app.use(cors);
+
 app.use(express.json());
 
 // Sincronizar modelos com o banco de dados

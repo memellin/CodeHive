@@ -25,14 +25,24 @@ router.post('/', async (req, res) => {
 // listar todos os snippets
 router.get('/', async (req, res) => {
     try{
-        const snippets = await Snippet.findAll({
-            where: {
-                userId: req.userId
-            }
-        });
+        const snippets = await Snippet.findAll();
         res.json(snippets);
     }catch(err){
         res.status(500).json({message: err.message});
+    }
+});
+
+router.get('/:id', async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        const snippet = await Snippet.findByPk(id);
+        if (!snippet) {
+            return res.status(404).json({ error: 'Snippet não encontrado.' });
+        }
+        res.json(snippet);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
     }
 });
 
