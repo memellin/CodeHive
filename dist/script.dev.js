@@ -24,7 +24,13 @@ sequelize.sync({
   return console.error('Erro ao sincronizar banco de dados:', err);
 }); // Rotas
 
-app.use('/api/snippets', snippetRoutes); // Rota teste
+app.use('/api/snippets', snippetRoutes);
+
+var swaggerUi = require('swagger-ui-express');
+
+var swaggerDocument = require('./swagger-output.json');
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument)); // Rota teste
 
 app.get("/", function (req, res) {
   res.send("API CodeHive funcionando!");

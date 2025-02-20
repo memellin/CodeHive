@@ -1,4 +1,4 @@
-# Use uma imagem base oficial do Node.js
+# Use uma imagem base oficial do Node.js 
 FROM node:14
 
 # Crie e defina o diretório de trabalho da aplicação

@@ -19,6 +19,11 @@ sequelize.sync({ force: false }) // force: true recria as tabelas
 // Rotas
 app.use('/api/snippets', snippetRoutes);
 
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('./swagger-output.json');
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
 
 // Rota teste
 app.get("/", (req, res) => {
