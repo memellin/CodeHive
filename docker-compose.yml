@@ -17,7 +17,7 @@ services:
     build: .
     container_name: codehive_backend
     ports:
-      - "3000:3000"
+      - "3333:3333"
     environment:
       DATABASE_URL: postgres://user:password@db:5432/snippetsdb
     depends_on:

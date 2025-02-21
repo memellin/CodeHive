@@ -35,7 +35,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument)); // Rota
 app.get("/", function (req, res) {
   res.send("API CodeHive funcionando!");
 });
-var PORT = 3000; // Inicia o servidor
+var PORT = 3333; // Inicia o servidor
 
 app.listen(PORT, function () {
   console.log("Server is running on port: ".concat(PORT));

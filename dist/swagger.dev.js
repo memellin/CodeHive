@@ -7,7 +7,7 @@ var doc = {
     title: 'CodeHive API',
     description: 'Documentação da API CodeHive'
   },
-  host: 'localhost:3000',
+  host: 'localhost:3333',
   schemes: ['http']
 };
 var outputFile = './swagger-output.json';

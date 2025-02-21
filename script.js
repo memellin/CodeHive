@@ -30,7 +30,7 @@ app.get("/", (req, res) => {
     res.send("API CodeHive funcionando!")
 })
 
-const PORT = 3000;
+const PORT = 3333;
 
 
 // Inicia o servidor
