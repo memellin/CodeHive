@@ -119,4 +119,121 @@ router.get('/:id', function _callee3(req, res) {
     }
   }, null, null, [[1, 10]]);
 });
+router.put('/:id', function _callee4(req, res) {
+  var id, _req$body2, title, code, language, tags, snippet, updatedSnippet;
+
+  return regeneratorRuntime.async(function _callee4$(_context4) {
+    while (1) {
+      switch (_context4.prev = _context4.next) {
+        case 0:
+          id = req.params.id;
+          _req$body2 = req.body, title = _req$body2.title, code = _req$body2.code, language = _req$body2.language, tags = _req$body2.tags;
+          _context4.prev = 2;
+          _context4.next = 5;
+          return regeneratorRuntime.awrap(Snippet.findByPk(id));
+
+        case 5:
+          snippet = _context4.sent;
+
+          if (snippet) {
+            _context4.next = 8;
+            break;
+          }
+
+          return _context4.abrupt("return", res.status(404).json({
+            error: 'Snippet não encontrado.'
+          }));
+
+        case 8:
+          _context4.next = 10;
+          return regeneratorRuntime.awrap(snippet.update({
+            title: title,
+            code: code,
+            language: language,
+            tags: tags
+          }));
+
+        case 10:
+          updatedSnippet = _context4.sent;
+          res.json(updatedSnippet);
+          _context4.next = 17;
+          break;
+
+        case 14:
+          _context4.prev = 14;
+          _context4.t0 = _context4["catch"](2);
+          res.status(500).json({
+            error: _context4.t0.message
+          });
+
+        case 17:
+        case "end":
+          return _context4.stop();
+      }
+    }
+  }, null, null, [[2, 14]]);
+});
+router["delete"]('/:id', function _callee5(req, res) {
+  var id, snippet;
+  return regeneratorRuntime.async(function _callee5$(_context5) {
+    while (1) {
+      switch (_context5.prev = _context5.next) {
+        case 0:
+          id = req.params.id;
+          _context5.prev = 1;
+          _context5.next = 4;
+          return regeneratorRuntime.awrap(Snippet.findByPk(id));
+
+        case 4:
+          snippet = _context5.sent;
+
+          if (snippet) {
+            _context5.next = 7;
+            break;
+          }
+
+          return _context5.abrupt("return", res.status(404).json({
+            error: 'Snippet não encontrado.'
+          }));
+
+        case 7:
+          _context5.next = 9;
+          return regeneratorRuntime.awrap(snippet.destroy());
+
+        case 9:
+          res.json({
+            message: 'Snippet excluído com sucesso!'
+          });
+          _context5.next = 15;
+          break;
+
+        case 12:
+          _context5.prev = 12;
+          _context5.t0 = _context5["catch"](1);
+          res.status(500).json({
+            error: _context5.t0.message
+          });
+
+        case 15:
+        case "end":
+          return _context5.stop();
+      }
+    }
+  }, null, null, [[1, 12]]);
+}); // router.get('/tags/:tag', async (req, res) => {
+//     const { tag } = req.params;
+//     try {
+//         const snippets = await Snippet.findAll({
+//             where: {
+//                 tags: {
+//                     [Op.contains]: [tag]
+//                 }
+//             }
+//         });
+//         res.json(snippets);
+//     } catch (err) {
+//         res.status(500).json({ error: err.message });
+//     }
+// });
+
 module.exports = router;

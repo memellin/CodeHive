@@ -46,5 +46,64 @@ router.get('/:id', async (req, res) => {
     }
 });
 
+router.put('/:id', async (req, res) => {
+    const { id } = req.params;
+    const { title, code, language, tags } = req.body;
+
+    try {
+        const snippet = await Snippet.findByPk(id);
+        if (!snippet) {
+            return res.status(404).json({ error: 'Snippet não encontrado.' });
+        }
+
+        const updatedSnippet = await snippet.update({
+            title,
+            code,
+            language,
+            tags
+        });
+
+        res.json(updatedSnippet);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+router.delete('/:id', async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        const snippet = await Snippet.findByPk(id);
+        if (!snippet) {
+            return res.status(404).json({ error: 'Snippet não encontrado.' });
+        }
+
+        await snippet.destroy();
+        res.json({ message: 'Snippet excluído com sucesso!' });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+// router.get('/tags/:tag', async (req, res) => {
+//     const { tag } = req.params;
+
+//     try {
+//         const snippets = await Snippet.findAll({
+//             where: {
+//                 tags: {
+//                     [Op.contains]: [tag]
+//                 }
+//             }
+//         });
+
+//         res.json(snippets);
+//     } catch (err) {
+//         res.status(500).json({ error: err.message });
+//     }
+// });
+
+
+
 module.exports = router;
 
