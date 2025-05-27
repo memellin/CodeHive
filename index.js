@@ -5,6 +5,7 @@ const snippetRoutes = require('./src/route/snippetRoutes');
 const cors = require('./src/config/cors');
 
 dotenv.config();
+console.log('DATABASE_URL:', process.env.DATABASE_URL);
 
 const app = express();
 app.use(cors);

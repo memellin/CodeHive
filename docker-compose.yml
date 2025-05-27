@@ -6,22 +6,13 @@ services:
     container_name: codehive_db
     environment:
       POSTGRES_USER: user
-      POSTGRES_PASSWORD: password
+      POSTGRES_PASSWORD: 123
       POSTGRES_DB: snippetsdb
     ports:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-
-  backend:
-    build: .
-    container_name: codehive_backend
-    ports:
-      - "3333:3333"
-    environment:
-      DATABASE_URL: postgres://user:password@db:5432/snippetsdb
-    depends_on:
-      - db
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql # Script para povoar o banco
 
 volumes:
   postgres_data:

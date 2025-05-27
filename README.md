@@ -4,22 +4,27 @@ Bem-vindo ao CodeHive! Este projeto é um ambiente de desenvolvimento colaborati
 
 ## Estrutura do Projeto
 
-Até agora, o projeto está estruturado da seguinte forma:
+O projeto está estruturado da seguinte forma:
 
-- **/f:/vscode/CodeHive/**: Diretório raiz do projeto.
-    - **README.md**: Arquivo de documentação do projeto.
+- **README.md**: Arquivo de documentação do projeto.
+- **index.js**: Arquivo principal que inicializa o servidor Express e configura as rotas.
+- **docker-compose.yml** e **dockerfile**: Arquivos para orquestração e construção dos containers Docker (backend e banco de dados).
+- **init.sql**: Script SQL para inicialização e povoamento do banco de dados PostgreSQL.
+- **swagger.js** e **swagger-output.json**: Geração e saída da documentação automática da API (Swagger).
+- **package.json** e **package-lock.json**: Gerenciamento de dependências e scripts do Node.js.
+- **src/**: Código-fonte principal do backend:
+  - **config/**: Configurações do projeto, como conexão com banco de dados (`database.js`) e CORS (`cors.js`).
+  - **route/**: Definição das rotas da API, como `snippetRoutes.js` (snippets) e `authRoutes.js` (autenticação).
+  - **middleware/**: Middlewares personalizados, como autenticação (`authMiddleware.js`).
+  - **entities/**: Definição dos modelos Sequelize, como `User.js` e `Snippet.js`.
+- **dist/**: Arquivos transpilados/gerados para ambiente de produção.
+- **.gitignore**: Arquivos e pastas ignorados pelo Git.
+- **node_modules/**: Dependências instaladas do projeto.
 
 ## Objetivo
 
 O objetivo do CodeHive é fornecer uma plataforma onde desenvolvedores possam colaborar em tempo real, compartilhar conhecimento e melhorar suas habilidades de programação.
 
-## Como Contribuir
-
-1. Faça um fork deste repositório.
-2. Crie uma nova branch (`git checkout -b feature/nova-feature`).
-3. Faça commit das suas alterações (`git commit -m 'Adiciona nova feature'`).
-4. Faça push para a branch (`git push origin feature/nova-feature`).
-5. Abra um Pull Request.
 
 ## Licença
 
