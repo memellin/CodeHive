@@ -48,7 +48,7 @@ router.get('/:id', async (req, res) => {
 
 router.put('/:id', async (req, res) => {
     const { id } = req.params;
-    const { title, code, language, tags } = req.body;
+    const { title, code, language, tags, userId } = req.body;
 
     try {
         const snippet = await Snippet.findByPk(id);
@@ -60,7 +60,8 @@ router.put('/:id', async (req, res) => {
             title,
             code,
             language,
-            tags
+            tags,
+            userId
         });
 
         res.json(updatedSnippet);

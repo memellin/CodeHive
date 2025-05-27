@@ -27,6 +27,7 @@ const Snippet = sequelize.define('Snippet', {
     userId: {
         type: DataTypes.INTEGER,
         allowNull: false,
+        field: 'userid', // mapeia o nome real da coluna no banco
         references: {
             model: User,
             key: 'id',
@@ -35,10 +36,12 @@ const Snippet = sequelize.define('Snippet', {
     createdAt: {
         type: DataTypes.DATE,
         defaultValue: DataTypes.NOW,
+        field: 'createdat' // nome real da coluna no banco
     },
     updatedAt: {
         type: DataTypes.DATE,
         defaultValue: DataTypes.NOW,
+        field: 'updatedat' // nome real da coluna no banco
     },
 });
 
