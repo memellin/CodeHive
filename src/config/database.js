@@ -8,7 +8,8 @@ const sequelize = new Sequelize(process.env.DATABASE_URL, {
     protocol: 'postgres',
     logging: false, // remove os logos do sequelize
     dialectOptions: {
-        ssl:  false, // para conexoes ssl(ex: heroku)
+        //  ssl:  false, // para conexoes ssl(ex: heroku)
+        require: true, // Necessário para Heroku
     }
 });
 
