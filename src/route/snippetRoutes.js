@@ -1,5 +1,6 @@
 const express = require('express');
 const Snippet = require('../entities/Snippet');
+const swaggerAutogen = require('swagger-autogen');
 const router = express.Router();
 
 // verificar se o usuário está autenticado
@@ -45,7 +46,6 @@ router.get('/:id', async (req, res) => {
         res.status(500).json({ error: err.message });
     }
 });
-
 router.put('/:id', async (req, res) => {
     const { id } = req.params;
     const { title, code, language, tags, userId } = req.body;

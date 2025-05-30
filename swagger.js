@@ -13,6 +13,6 @@ const outputFile = './swagger-output.json';
 const endpointsFiles = ['./src/route/snippetRoutes.js'];
 
 swaggerAutogen(outputFile, endpointsFiles, doc).then(() => {
-    require('./script.js'); // project's root file
+    require('./index.js'); // project's root file
 });
 

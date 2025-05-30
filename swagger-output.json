@@ -5,7 +5,7 @@
     "description": "Documentação da API CodeHive",
     "version": "1.0.0"
   },
-  "host": "localhost:3000",
+  "host": "localhost:3333",
   "basePath": "/",
   "schemes": [
     "http"
@@ -60,6 +60,74 @@
     },
     "/{id}": {
       "get": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "put": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "example": "any"
+                },
+                "code": {
+                  "example": "any"
+                },
+                "language": {
+                  "example": "any"
+                },
+                "tags": {
+                  "example": "any"
+                },
+                "userId": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "delete": {
         "description": "",
         "parameters": [
           {
