@@ -6,9 +6,9 @@ const cors = require('./src/config/cors');
 
 // --- Importação das Rotas ---
 // authRoutes agora contém registro, login tradicional e login OAuth
-const authRoutes = require('./src/routes/authRoutes'); 
+const authRoutes = require('./src/route/authRoutes'); 
 // Importe a rota de snippets
-const snippetRoutes = require('./src/routes/snippetRoutes');
+const snippetRoutes = require('./src/route/snippetRoutes');
 
 const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('./swagger-output.json');
