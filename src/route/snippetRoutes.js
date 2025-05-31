@@ -6,7 +6,7 @@ const router = express.Router();
 // verificar se o usuário está autenticado
 
 // criar um snippet
-router.post('/', async (req, res) => {
+router.post('/snippets', async (req, res) => {
     const {title, code, language, tags} = req.body;
     const userId = 1;
     try{
@@ -24,7 +24,7 @@ router.post('/', async (req, res) => {
 });
 
 // listar todos os snippets
-router.get('/', async (req, res) => {
+router.get('/snippets', async (req, res) => {
     try{
         const snippets = await Snippet.findAll();
         res.json(snippets);
@@ -33,7 +33,7 @@ router.get('/', async (req, res) => {
     }
 });
 
-router.get('/:id', async (req, res) => {
+router.get('/snippets/:id', async (req, res) => {
     const { id } = req.params;
 
     try {
@@ -46,7 +46,7 @@ router.get('/:id', async (req, res) => {
         res.status(500).json({ error: err.message });
     }
 });
-router.put('/:id', async (req, res) => {
+router.put('/snippets/:id', async (req, res) => {
     const { id } = req.params;
     const { title, code, language, tags, userId } = req.body;
 
@@ -70,7 +70,7 @@ router.put('/:id', async (req, res) => {
     }
 });
 
-router.delete('/:id', async (req, res) => {
+router.delete('/snippets/:id', async (req, res) => {
     const { id } = req.params;
 
     try {
