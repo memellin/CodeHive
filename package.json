@@ -5,7 +5,9 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node app.js"
+    "start": "node app.js",
+    "heroku-postbuild": "npx sequelize-cli db:migrate --config config/config.json"
+
   },
   "repository": {
     "type": "git",
