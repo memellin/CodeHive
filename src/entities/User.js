@@ -32,6 +32,16 @@ const User = sequelize.define('User', {
         type: DataTypes.DATE,
         defaultValue: DataTypes.NOW,
     },
+    googleId: { // ID único do Google
+        type: DataTypes.STRING,
+        unique: true,
+        allowNull: true, // Pode ser null se o usuário não logar via Google
+    },
+    githubId: { // ID único do GitHub
+        type: DataTypes.STRING,
+        unique: true,
+        allowNull: true, // Pode ser null se o usuário não logar via GitHub
+    },
 });
 
 module.exports = User;
