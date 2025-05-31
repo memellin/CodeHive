@@ -29,5 +29,8 @@
     "sequelize": "^6.37.5",
     "swagger-autogen": "^2.23.7",
     "swagger-ui-express": "^5.0.1"
+  },
+  "devDependencies": {
+    "sequelize-cli": "^6.x.x"
   }
 }
