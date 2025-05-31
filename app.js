@@ -27,7 +27,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // ROTAS DE AUTENTICAÇÃO
 const authRoutes = require('./src/route/authRoutes');
-app.use('/api/auth', oauthAuthRoutes); // Monta as rotas OAuth sob /api/auth
+app.use('/api/auth', authRoutes); // Monta as rotas OAuth sob /api/auth
 
 
 // Rota teste
