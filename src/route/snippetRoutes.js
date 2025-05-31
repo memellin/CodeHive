@@ -2,14 +2,16 @@ const express = require('express');
 const Snippet = require('../entities/Snippet');
 const swaggerAutogen = require('swagger-autogen');
 const router = express.Router();
+const authMiddleware = require('../middleware/authMiddleware'); // Middleware de autenticação
 
-// verificar se o usuário está autenticado
+
+router.use(authMiddleware); // Aplicar o middleware de autenticação a todas as rotas deste arquivo
 
 // criar um snippet
 router.post('/snippets', async (req, res) => {
-    const {title, code, language, tags} = req.body;
-    const userId = 1;
-    try{
+    const { title, code, language, tags } = req.body;
+    const userId = req.user.id; // Relacionar o snippet ao usuário autenticado
+    try {
         const snippet = await Snippet.create({
             title,
             code,
@@ -18,26 +20,33 @@ router.post('/snippets', async (req, res) => {
             userId,
         });
         res.status(201).json(snippet);
-    }catch(err){	
-        res.status(500).json({message: err.message});
+    } catch (err) {
+        res.status(500).json({ message: err.message });
     }
 });
 
 // listar todos os snippets
 router.get('/snippets', async (req, res) => {
-    try{
-        const snippets = await Snippet.findAll();
+    const userId = req.user.id; // Listar snippets apenas do usuário autenticado
+    try {
+        const snippets = await Snippet.findAll({
+            where: { userId }, // Filtrar snippets pelo ID do usuário autenticado
+            order: [['createdAt', 'DESC']] // Ordenar por data de criação, do mais recente para o mais antigo
+        });
         res.json(snippets);
-    }catch(err){
-        res.status(500).json({message: err.message});
+    } catch (err) {
+        res.status(500).json({ message: err.message });
     }
 });
 
 router.get('/snippets/:id', async (req, res) => {
     const { id } = req.params;
-
+    const userId = req.user.id; // Verificar se o snippet pertence ao usuário autenticado
     try {
-        const snippet = await Snippet.findByPk(id);
+        const snippet = await Snippet.findOne({
+            where: { id, userId }
+        });
+
         if (!snippet) {
             return res.status(404).json({ error: 'Snippet não encontrado.' });
         }
@@ -46,12 +55,15 @@ router.get('/snippets/:id', async (req, res) => {
         res.status(500).json({ error: err.message });
     }
 });
+
 router.put('/snippets/:id', async (req, res) => {
     const { id } = req.params;
-    const { title, code, language, tags, userId } = req.body;
-
+    const { title, code, language, tags } = req.body;
+    const userId = req.user.id; // Verificar se o snippet pertence ao usuário autenticado
     try {
-        const snippet = await Snippet.findByPk(id);
+        const snippet = await Snippet.findOne({
+            where: { id, userId }
+        });
         if (!snippet) {
             return res.status(404).json({ error: 'Snippet não encontrado.' });
         }
@@ -60,11 +72,11 @@ router.put('/snippets/:id', async (req, res) => {
             title,
             code,
             language,
-            tags,
-            userId
+            tags
         });
 
         res.json(updatedSnippet);
+
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
@@ -72,9 +84,11 @@ router.put('/snippets/:id', async (req, res) => {
 
 router.delete('/snippets/:id', async (req, res) => {
     const { id } = req.params;
-
+    const userId = req.user.id; // Verificar se o snippet pertence ao usuário autenticado
     try {
-        const snippet = await Snippet.findByPk(id);
+        const snippet = await Snippet.findOne({
+             where: { id, userId } 
+            });
         if (!snippet) {
             return res.status(404).json({ error: 'Snippet não encontrado.' });
         }
