@@ -6,7 +6,7 @@ const cors = require('./src/config/cors');
 
 // --- Importação das Rotas ---
 // authRoutes agora contém registro, login tradicional e login OAuth
-const authRoutes = require('./src/routes/authRoute'); 
+const authRoutes = require('./src/routes/authRoutes'); 
 // Importe a rota de snippets
 const snippetRoutes = require('./src/routes/snippetRoutes');
 
