@@ -1,44 +1,63 @@
+// app.js (seu arquivo principal do Express)
 const express = require('express');
 const dotenv = require('dotenv');
 const sequelize = require('./src/config/database');
-const snippetRoutes = require('./src/route/snippetRoutes');
 const cors = require('./src/config/cors');
+
+// --- Importação das Rotas ---
+// authRoutes agora contém registro, login tradicional e login OAuth
+const authRoutes = require('./src/routes/authRoute'); 
+// Importe a rota de snippets
+const snippetRoutes = require('./src/routes/snippetRoutes');
+
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('./swagger-output.json');
 
 dotenv.config();
 console.log('DATABASE_URL:', process.env.DATABASE_URL);
 
 const app = express();
+
+// --- Middlewares Globais ---
 app.use(cors);
-
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-// Sincronizar modelos com o banco de dados
-sequelize.sync({ force: false }) // force: true recria as tabelas
-    .then(() => console.log('Banco de dados sincronizado'))
-    .catch(err => console.error('Erro ao sincronizar banco de dados:', err));
+// --- Montagem das Rotas ---
+// Todas as rotas de autenticação (tradicional e OAuth) serão montadas sob '/api'
+// Isso significa que:
+// - POST /api/register
+// - POST /api/login
+// - POST /api/oauth-login
+app.use('/api', authRoutes);
 
-// Rotas
-app.use('/api/snippets', snippetRoutes);
+// Monta as rotas de snippets sob o prefixo '/api'
+app.use('/api', snippetRoutes);
 
-const swaggerUi = require('swagger-ui-express');
-const swaggerDocument = require('./swagger-output.json');
-
+// Rota de documentação Swagger
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-// ROTAS DE AUTENTICAÇÃO
-const authRoutes = require('./src/route/authRoutes');
-app.use('/api/auth', authRoutes); // Monta as rotas OAuth sob /api/auth
-
-
-// Rota teste
+// Rota de teste
 app.get("/", (req, res) => {
     res.send("API CodeHive funcionando!")
-})
+});
 
-const PORT = process.env.PORT || 3333;
+// --- Inicialização do Servidor e Sincronização do Banco de Dados ---
+async function startApplication() {
+    try {
+        await sequelize.authenticate();
+        console.log('Conexão com o banco de dados estabelecida com sucesso.');
+        await sequelize.sync({ force: false });
+        console.log('Banco de dados sincronizado');
 
+        const PORT = process.env.PORT || 3333;
 
-// Inicia o servidor
-app.listen(PORT, () => {
-    console.log(`Server is running on port: ${PORT}`);
-})
+        app.listen(PORT, () => {
+            console.log(`Server is running on port: ${PORT}`);
+        });
+    } catch (err) {
+        console.error('Erro ao iniciar a aplicação ou conectar ao banco de dados:', err);
+    }
+}
+
+startApplication();

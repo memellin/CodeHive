@@ -1,9 +1,70 @@
-// src/routes/oauthAuthRoutes.js
+// src/routes/authRoute.js
 const express = require('express');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const User = require('../entities/User'); // Importe o modelo de usuário
 const router = express.Router();
-const User = require('../entities/User');
-const jwt = require('jsonwebtoken'); // Para gerar seu próprio token JWT
 
+// --- Rota de registro de usuário ---
+router.post('/register', async (req, res) => {
+    const { username, email, password } = req.body;
+
+    try {
+        // Verificar se o usuário já existe
+        const existingUser = await User.findOne({ where: { email } });
+        if (existingUser) {
+            return res.status(400).json({ error: 'Usuário já existe.' });
+        }
+
+        // Criptografar a senha
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        // Criar novo usuário
+        const newUser = await User.create({
+            username,
+            email,
+            password: hashedPassword,
+        });
+
+        // Retornar resposta de sucesso
+        res.status(201).json({ message: 'Usuário registrado com sucesso!', user: newUser });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+// --- Rota de login de usuário (tradicional) ---
+router.post('/login', async (req, res) => {
+    const { email, password } = req.body;
+
+    try {
+        // Verificar se o usuário existe
+        const user = await User.findOne({ where: { email } });
+        if (!user) {
+            return res.status(400).json({ error: 'Credenciais inválidas.' });
+        }
+
+        // Verificar a senha
+        const isPasswordValid = await bcrypt.compare(password, user.password);
+        if (!isPasswordValid) {
+            return res.status(400).json({ error: 'Credenciais inválidas.' });
+        }
+
+        // Gerar um token JWT para sua API (se você ainda usa para logins tradicionais)
+        const apiToken = jwt.sign(
+            { id: user.id, email: user.email },
+            process.env.JWT_SECRET,
+            { expiresIn: '1h' }
+        );
+
+        res.json({ user: { id: user.id, username: user.username, email: user.email }, token: apiToken });
+
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+// --- Rota para Login OAuth (Google/GitHub) ---
 router.post('/oauth-login', async (req, res) => {
     const { email, name, providerId, provider } = req.body;
 
@@ -26,10 +87,11 @@ router.post('/oauth-login', async (req, res) => {
                 // Atualiza o usuário existente para vincular o ID do provedor
                 if (provider === 'google' && !user.googleId) {
                     user.googleId = providerId;
+                    await user.save();
                 } else if (provider === 'github' && !user.githubId) {
                     user.githubId = providerId;
+                    await user.save();
                 }
-                await user.save();
             } else {
                 // Se não encontrou de jeito nenhum, cria um novo usuário
                 const newUser = {
@@ -49,7 +111,7 @@ router.post('/oauth-login', async (req, res) => {
         // Gerar um token JWT personalizado para sua API
         const apiToken = jwt.sign(
             { id: user.id, email: user.email, provider: provider },
-            process.env.JWT_SECRET, // Uma variável de ambiente com uma chave secreta
+            process.env.JWT_SECRET,
             { expiresIn: '7d' } // Expira em 7 dias
         );
 
